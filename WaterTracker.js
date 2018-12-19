@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 export default class WaterTracker extends Component {
   constructor(props) {
@@ -24,10 +24,11 @@ export default class WaterTracker extends Component {
 
   render() {
     return (
-      <View>
-        { this.state.isWaterGoalMet && <Text>You've reached your goal for today!</Text> }
-        <Text>{this.state.cupsDrankToday} / {this.state.amtCupsToDrink}</Text>
+      <View style={styles.waterTracker}>
+        { this.state.isWaterGoalMet && <Text style={styles.goal}>You've reached your goal for today!</Text> }
+        <Text style={styles.tracker}>{this.state.cupsDrankToday} / {this.state.amtCupsToDrink}</Text>
         <Button
+          style={styles.button}
           onPress={this.addWater}
           title='I drank a cup of water!'
         />
@@ -35,3 +36,20 @@ export default class WaterTracker extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  waterTracker: {
+    backgroundColor: '#a8c9ff'
+  },
+  goal: {
+    color: 'red'
+  },
+  tracker: {
+    color: 'white'
+  },
+  button: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: 'black'
+  }
+});
