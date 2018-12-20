@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, TabBarIOS } from 'react-native';
 import WaterTracker from './WaterTracker';
 import Profile from './Profile';
 
+import { store } from './store.js';
+import { Provider } from 'react-redux';
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -18,22 +21,27 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <TabBarIOS selectedTab={this.state.selectedTab}>
-        <TabBarIOS.Item
-          selected={this.state.selectedTab === 'waterTracker'}
-          title='Water Tracker'
-          onPress={this._changeTabTo.bind(this, 'waterTracker')}
-        >
-          <WaterTracker />
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          selected={this.state.selectedTab === 'profile'}
-          title='Profile'
-          onPress={this._changeTabTo.bind(this, 'profile')}
-        >
-          <Profile />
-        </TabBarIOS.Item>
-      </TabBarIOS>
+      <Provider store={store}>
+        <TabBarIOS selectedTab={this.state.selectedTab}>
+          <TabBarIOS.Item
+            selected={this.state.selectedTab === 'waterTracker'}
+            title='Water Tracker'
+            onPress={this._changeTabTo.bind(this, 'waterTracker')}
+          >
+            <WaterTracker />
+          </TabBarIOS.Item>
+          <TabBarIOS.Item
+            selected={this.state.selectedTab === 'profile'}
+            title='Profile'
+            onPress={this._changeTabTo.bind(this, 'profile')}
+          >
+            <Profile />
+          </TabBarIOS.Item>
+        </TabBarIOS>
+      </Provider>
     );
   }
 }
+
+// TODO create a reducer for fetching the data and adding new water data
+// TODO create actions for adding a cup of water, reaching the target water goal and retrieving the current data
