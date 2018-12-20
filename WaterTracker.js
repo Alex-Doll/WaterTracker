@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Button, AsyncStorage } from 'react-native';
 
 export default class WaterTracker extends Component {
   constructor(props) {
@@ -12,6 +12,15 @@ export default class WaterTracker extends Component {
     };
   }
 
+  _storeData = async () => {
+    try {
+      await AsyncStorage.setItem((new Date()).toLocaleString(), `${this.state.cupsDrankToday} / ${this.state.amtCupsToDrink}, goal met: ${this.state.isWaterGoalMet}`);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
   addWater = (event) => {
     this.setState(prevState => {
       const newCupsAmt = prevState.cupsDrankToday + 1;
@@ -22,9 +31,13 @@ export default class WaterTracker extends Component {
     });
   }
 
+  resetCups = () => {
+    this.setState({ cupsDrankToday: 0 });
+  }
+
   render() {
     return (
-      <View style={styles.waterTracker}>
+      <SafeAreaView style={styles.waterTracker}>
         { this.state.isWaterGoalMet && <Text style={styles.goal}>You've reached your goal for today!</Text> }
         <Text style={styles.tracker}>{this.state.cupsDrankToday} / {this.state.amtCupsToDrink}</Text>
         <Button
@@ -32,7 +45,15 @@ export default class WaterTracker extends Component {
           onPress={this.addWater}
           title='I drank a cup of water!'
         />
-      </View>
+        <Button
+          onPress={this.resetCups}
+          title='Reset cups drank'
+        />
+        <Button
+          onPress={this._storeData}
+          title='Save Water Data'
+        />
+      </SafeAreaView>
     );
   }
 }
@@ -45,14 +66,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   goal: {
-    color: 'red'
+    color: 'red',
   },
   tracker: {
-    color: 'white'
+    color: 'white',
   },
   button: {
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: 'black'
+    borderColor: 'black',
   }
 });
