@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, SafeAreaView, Button, AsyncStorage } from 'react-native';
+import { addDailyWater, resetDailyWater } from './store';
+import { connect } from 'react-redux';
 
-export default class WaterTracker extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      cupsDrankToday: 0,
-      amtCupsToDrink: 8,
-      isWaterGoalMet: false
-    };
-  }
-
+class WaterTracker extends Component {
   _storeData = async () => {
     try {
       await AsyncStorage.setItem((new Date()).toLocaleString(), `${this.state.cupsDrankToday} / ${this.state.amtCupsToDrink}, goal met: ${this.state.isWaterGoalMet}`);
@@ -21,32 +13,20 @@ export default class WaterTracker extends Component {
     }
   }
 
-  addWater = (event) => {
-    this.setState(prevState => {
-      const newCupsAmt = prevState.cupsDrankToday + 1;
-      return {
-        cupsDrankToday: newCupsAmt,
-        isWaterGoalMet: newCupsAmt >= prevState.amtCupsToDrink
-      };
-    });
-  }
-
-  resetCups = () => {
-    this.setState({ cupsDrankToday: 0 });
-  }
-
   render() {
+    const isWaterGoalMet = this.props.cupsDrankToday >= this.props.amtCupsToDrink;
+    console.log(this.props);
     return (
       <SafeAreaView style={styles.waterTracker}>
-        { this.state.isWaterGoalMet && <Text style={styles.goal}>You've reached your goal for today!</Text> }
-        <Text style={styles.tracker}>{this.state.cupsDrankToday} / {this.state.amtCupsToDrink}</Text>
+        { isWaterGoalMet && <Text style={styles.goal}>You've reached your goal for today!</Text> }
+        <Text style={styles.tracker}>{this.props.cupsDrankToday} / {this.props.amtCupsToDrink}</Text>
         <Button
           style={styles.button}
-          onPress={this.addWater}
+          onPress={this.props.addDailyWater}
           title='I drank a cup of water!'
         />
         <Button
-          onPress={this.resetCups}
+          onPress={this.props.resetDailyWater}
           title='Reset cups drank'
         />
         <Button
@@ -77,3 +57,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
   }
 });
+
+const mapStateToProps = (state) => ({
+  cupsDrankToday: state.dailyWater.current,
+  amtCupsToDrink: state.dailyWater.goal,
+});
+
+export default connect(mapStateToProps, { addDailyWater, resetDailyWater })(WaterTracker);
