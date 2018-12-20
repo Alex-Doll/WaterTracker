@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, SafeAreaView, Button, AsyncStorage } from 'react-native';
-import { addDailyWater, resetDailyWater } from './store';
+import { store, addDailyWater, resetDailyWater, logState } from './store';
 import { connect } from 'react-redux';
 
 class WaterTracker extends Component {
@@ -15,7 +15,6 @@ class WaterTracker extends Component {
 
   render() {
     const isWaterGoalMet = this.props.cupsDrankToday >= this.props.amtCupsToDrink;
-    console.log(this.props);
     return (
       <SafeAreaView style={styles.waterTracker}>
         { isWaterGoalMet && <Text style={styles.goal}>You've reached your goal for today!</Text> }
@@ -32,6 +31,10 @@ class WaterTracker extends Component {
         <Button
           onPress={this._storeData}
           title='Save Water Data'
+        />
+        <Button
+          onPress={() => { console.log(store.getState());} }
+          title='LOG STATE'
         />
       </SafeAreaView>
     );
@@ -63,4 +66,9 @@ const mapStateToProps = (state) => ({
   amtCupsToDrink: state.dailyWater.goal,
 });
 
-export default connect(mapStateToProps, { addDailyWater, resetDailyWater })(WaterTracker);
+const mapDispatchToProps = () => ({
+  addDailyWater,
+  resetDailyWater,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps())(WaterTracker);
