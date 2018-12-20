@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TabBarIOS } from 'react-native';
 import WaterTracker from './WaterTracker';
+import Profile from './Profile';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,7 +31,7 @@ export default class App extends React.Component {
           title='Profile'
           onPress={this._changeTabTo.bind(this, 'profile')}
         >
-          <WaterTracker />
+          <Profile />
         </TabBarIOS.Item>
       </TabBarIOS>
     );
