@@ -39,7 +39,10 @@ export default class WaterTracker extends Component {
 
 const styles = StyleSheet.create({
   waterTracker: {
-    backgroundColor: '#a8c9ff'
+    flex: 1,
+    backgroundColor: '#a8c9ff',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   goal: {
     color: 'red'
