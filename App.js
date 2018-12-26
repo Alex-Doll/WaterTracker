@@ -4,7 +4,7 @@ import WaterTracker from './WaterTracker';
 import Profile from './Profile';
 import DevTools from './DevTools';
 
-import { store } from './store.js';
+import { store, setTodaysDate } from './store.js';
 import { Provider } from 'react-redux';
 
 export default class App extends React.Component {
@@ -14,6 +14,10 @@ export default class App extends React.Component {
     this.state = {
       selectedTab: 'waterTracker',
     }
+  }
+
+  componentDidMount() {
+    store.dispatch(setTodaysDate());
   }
 
   _changeTabTo = (tabToSelect) => {

@@ -1,41 +1,25 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, SafeAreaView, Button, AsyncStorage } from 'react-native';
-import { store, addDailyWater, resetDailyWater, logState } from './store';
+import { store, addDailyWater, resetDailyWater } from './store';
 import { connect } from 'react-redux';
 
 class WaterTracker extends Component {
-  _getStorageKeys = async () => {
-    try {
-      const storageKeys = await AsyncStorage.getAllKeys();
-      console.log(storageKeys);
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
-
   render() {
     const isWaterGoalMet = this.props.cupsDrankToday >= this.props.amtCupsToDrink;
     return (
       <SafeAreaView style={styles.waterTracker}>
-        { isWaterGoalMet && <Text style={styles.goal}>You've reached your goal for today!</Text> }
+        <Text>{this.props.today}</Text>
         <Text style={styles.tracker}>{this.props.cupsDrankToday} / {this.props.amtCupsToDrink}</Text>
+        { isWaterGoalMet && <Text style={styles.goal}>Daily Water Goal Reached!</Text> }
         <Button
           style={styles.button}
-          onPress={this.props.addDailyWater}
-          title='I drank a cup of water!'
+          onPress={this.props.addDailyWater.bind(this, 1)}
+          title='8oz.'
         />
         <Button
-          onPress={this.props.resetDailyWater}
-          title='Reset cups drank'
-        />
-        <Button
-          onPress={() => { console.log(store.getState());} }
-          title='LOG STATE'
-        />
-        <Button
-          onPress={this._getStorageKeys}
-          title='LOG STORAGE'
+          style={styles.button}
+          onPress={this.props.addDailyWater.bind(this, 2)}
+          title='16oz.'
         />
       </SafeAreaView>
     );
@@ -65,6 +49,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   cupsDrankToday: state.dailyWater.current,
   amtCupsToDrink: state.dailyWater.goal,
+  today: state.today,
 });
 
 const mapDispatchToProps = () => ({
