@@ -4,9 +4,10 @@ import { store, addDailyWater, resetDailyWater, logState } from './store';
 import { connect } from 'react-redux';
 
 class WaterTracker extends Component {
-  _storeData = async () => {
+  _getStorageKeys = async () => {
     try {
-      await AsyncStorage.setItem((new Date()).toLocaleString(), `${this.state.cupsDrankToday} / ${this.state.amtCupsToDrink}, goal met: ${this.state.isWaterGoalMet}`);
+      const storageKeys = await AsyncStorage.getAllKeys();
+      console.log(storageKeys);
     }
     catch (error) {
       console.log(error);
@@ -29,12 +30,12 @@ class WaterTracker extends Component {
           title='Reset cups drank'
         />
         <Button
-          onPress={this._storeData}
-          title='Save Water Data'
-        />
-        <Button
           onPress={() => { console.log(store.getState());} }
           title='LOG STATE'
+        />
+        <Button
+          onPress={this._getStorageKeys}
+          title='LOG STORAGE'
         />
       </SafeAreaView>
     );

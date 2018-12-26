@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TabBarIOS } from 'react-native';
 import WaterTracker from './WaterTracker';
 import Profile from './Profile';
+import DevTools from './DevTools';
 
 import { store } from './store.js';
 import { Provider } from 'react-redux';
@@ -37,11 +38,15 @@ export default class App extends React.Component {
           >
             <Profile />
           </TabBarIOS.Item>
+          <TabBarIOS.Item
+            selected={this.state.selectedTab === 'devTools'}
+            title='Dev Tools'
+            onPress={this._changeTabTo.bind(this, 'devTools')}
+          >
+            <DevTools />
+          </TabBarIOS.Item>
         </TabBarIOS>
       </Provider>
     );
   }
 }
-
-// TODO create a reducer for fetching the data and adding new water data
-// TODO create actions for adding a cup of water, reaching the target water goal and retrieving the current data
