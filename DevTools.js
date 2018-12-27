@@ -5,10 +5,19 @@ import { store, resetDailyWater } from './store';
 import { connect } from 'react-redux';
 
 class DevTools extends Component {
-  _getStorageKeys = async () => {
+  _logAsyncStorage = async () => {
     try {
       const storageKeys = await AsyncStorage.getAllKeys();
-      console.log(storageKeys);
+      console.log('Current Async Storage:');
+      storageKeys.forEach((key, index) => {
+        AsyncStorage.getItem(key)
+                    .then(item => {
+                      console.log(`Key: ${key} => Item: ${item}`);
+                    })
+                    .catch(error => {
+                      console.log(error);
+                    });
+      });
     }
     catch (error) {
       console.log(error);
@@ -34,7 +43,7 @@ class DevTools extends Component {
           title='LOG STATE'
         />
         <Button
-          onPress={this._getStorageKeys}
+          onPress={this._logAsyncStorage}
           title='LOG STORAGE'
         />
         <Button
