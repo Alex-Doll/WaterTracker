@@ -1,9 +1,11 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { AsyncStorage } from 'react-native';
+import thunk from 'redux-thunk';
 
 
 const ADD_DAILY_WATER = 'ADD_DAILY_WATER';
 const RESET_DAILY_WATER = 'RESET_DAILY_WATER';
+const INITIALIZE_DAILY_WATER = 'INITIALIZE_DAILY_WATER';
 const SET_TODAYS_DATE = 'SET_TODAYS_DATE';
 
 export const addDailyWater = (amtCups) => ({
@@ -14,6 +16,14 @@ export const addDailyWater = (amtCups) => ({
 export const resetDailyWater = () => ({
   type: RESET_DAILY_WATER,
 });
+
+export const initializeDailyWater = () => dispatch => {
+  AsyncStorage.getItem(new Date().toLocaleDateString())
+              .then(storedWaterAmt => dispatch({
+                type: INITIALIZE_DAILY_WATER,
+                payload: Number(storedWaterAmt),
+              }));
+};
 
 export const setTodaysDate = () => ({
   type: SET_TODAYS_DATE,
@@ -49,6 +59,11 @@ const dailyWater = (state = dailyWaterInitialState, action) => {
         ...state,
         current: resetWaterAmt,
       };
+    case INITIALIZE_DAILY_WATER:
+      return {
+        ...state,
+        current: action.payload,
+      };
     default:
       return state;
   };
@@ -68,4 +83,4 @@ const rootReducer = combineReducers({
   today,
 });
 
-export const store = createStore(rootReducer);
+export const store = createStore(rootReducer, applyMiddleware(thunk));
