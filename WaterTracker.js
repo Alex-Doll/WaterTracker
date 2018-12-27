@@ -18,6 +18,7 @@ class WaterTracker extends Component {
 
     return trackers;
   }
+
   render() {
     const isWaterGoalMet = this.props.cupsDrank >= this.props.cupsGoal;
 

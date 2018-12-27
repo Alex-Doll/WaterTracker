@@ -1,4 +1,5 @@
 import { createStore, combineReducers } from 'redux';
+import { AsyncStorage } from 'react-native';
 
 
 const ADD_DAILY_WATER = 'ADD_DAILY_WATER';
@@ -23,18 +24,30 @@ const dailyWaterInitialState = {
   goal: 8,
 };
 
+function setAsyncStorage(key, value) {
+  AsyncStorage.setItem(key, String(value))
+              .catch(error => {
+                console.log(error);
+              });
+
+  return;
+}
 
 const dailyWater = (state = dailyWaterInitialState, action) => {
   switch(action.type) {
     case ADD_DAILY_WATER:
+      const newWaterAmt = state.current + action.amtCups;
+      setAsyncStorage(new Date().toLocaleDateString(), newWaterAmt);
       return {
         ...state,
-        current: state.current + action.amtCups,
+        current: newWaterAmt,
       };
     case RESET_DAILY_WATER:
+      const resetWaterAmt = 0;
+      setAsyncStorage(new Date().toLocaleDateString(), resetWaterAmt);
       return {
         ...state,
-        current: 0,
+        current: resetWaterAmt,
       };
     default:
       return state;
@@ -44,7 +57,7 @@ const dailyWater = (state = dailyWaterInitialState, action) => {
 const today = (state = null, action) => {
   switch(action.type) {
     case SET_TODAYS_DATE:
-      return (new Date().toLocaleDateString());
+      return new Date().toLocaleDateString();
     default:
       return state;
   }
