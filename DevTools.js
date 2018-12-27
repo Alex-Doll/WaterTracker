@@ -15,6 +15,11 @@ class DevTools extends Component {
     }
   }
 
+  _resetData = async () => {
+    await AsyncStorage.clear();
+    this.setState({ results: []});
+  }
+
   render() {
     return (
       <SafeAreaView>
@@ -31,6 +36,10 @@ class DevTools extends Component {
         <Button
           onPress={this._getStorageKeys}
           title='LOG STORAGE'
+        />
+        <Button
+          title='Reset Storage'
+          onPress={this._resetData}
         />
       </SafeAreaView>
     );

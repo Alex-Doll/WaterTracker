@@ -31,11 +31,6 @@ export default class Profile extends Component {
     }
   }
 
-  _resetData = async () => {
-    await AsyncStorage.clear();
-    this.setState({ results: []});
-  }
-
   render() {
     const results = this.state.results.map((result, index) => (
       <Text key={index} style={{color: 'black'}}>{result[0]}: {result[1]}</Text>
@@ -49,10 +44,6 @@ export default class Profile extends Component {
           onPress={this._retrieveData}
         />
         {results.length > 0 ? results : <Text>No Saved Data!!!</Text>}
-        <Button
-          title='Reset Data'
-          onPress={this._resetData}
-        />
       </SafeAreaView>
     );
   }
