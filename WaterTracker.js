@@ -1,15 +1,32 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, SafeAreaView, Button, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Button, AsyncStorage, View } from 'react-native';
 import { store, addDailyWater, resetDailyWater } from './store';
 import { connect } from 'react-redux';
 
 class WaterTracker extends Component {
+  renderTrackers = () => {
+    let trackers = [];
+
+    for (let i = 0; i < this.props.cupsGoal; i++) {
+      trackers.push(
+        <View
+          key={i}
+          style={(i < this.props.cupsDrank) ? styles.complete : styles.incomplete}
+        ></View>
+      );
+    }
+
+    return trackers;
+  }
   render() {
-    const isWaterGoalMet = this.props.cupsDrankToday >= this.props.amtCupsToDrink;
+    const isWaterGoalMet = this.props.cupsDrank >= this.props.cupsGoal;
+
     return (
       <SafeAreaView style={styles.waterTracker}>
         <Text>{this.props.today}</Text>
-        <Text style={styles.tracker}>{this.props.cupsDrankToday} / {this.props.amtCupsToDrink}</Text>
+        <View style={styles.tracker}>
+          { this.renderTrackers() }
+        </View>
         { isWaterGoalMet && <Text style={styles.goal}>Daily Water Goal Reached!</Text> }
         <Button
           style={styles.button}
@@ -37,7 +54,28 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   tracker: {
-    color: 'white',
+    padding: 20,
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 1,
+  },
+  complete: {
+    margin: 5,
+    height: 10,
+    width: 10,
+    backgroundColor: 'blue',
+    borderColor: 'blue',
+    borderStyle: 'solid',
+    borderWidth: 1,
+  },
+  incomplete: {
+    margin: 5,
+    height: 10,
+    width: 10,
+    backgroundColor: 'transparent',
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 1,
   },
   button: {
     borderWidth: 1,
@@ -47,8 +85,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  cupsDrankToday: state.dailyWater.current,
-  amtCupsToDrink: state.dailyWater.goal,
+  cupsDrank: state.dailyWater.current,
+  cupsGoal: state.dailyWater.goal,
   today: state.today,
 });
 
