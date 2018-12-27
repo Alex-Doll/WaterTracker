@@ -4,7 +4,8 @@ import WaterTracker from './components/WaterTracker';
 import Profile from './components/Profile';
 import DevTools from './components/DevTools';
 
-import { store, setTodaysDate, initializeDailyWater } from './store.js';
+import { store } from './store.js';
+import { setTodaysDate, initializeDailyWater } from './actions';
 import { Provider } from 'react-redux';
 
 export default class App extends React.Component {
