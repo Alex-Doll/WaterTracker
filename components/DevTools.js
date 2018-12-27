@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, Button, AsyncStorage } from 'react-native';
 
-import { store, resetDailyWater } from './store';
+import { store, resetDailyWater } from '../store';
 import { connect } from 'react-redux';
 
 class DevTools extends Component {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TabBarIOS } from 'react-native';
-import WaterTracker from './WaterTracker';
-import Profile from './Profile';
-import DevTools from './DevTools';
+import WaterTracker from './components/WaterTracker';
+import Profile from './components/Profile';
+import DevTools from './components/DevTools';
 
 import { store, setTodaysDate, initializeDailyWater } from './store.js';
 import { Provider } from 'react-redux';

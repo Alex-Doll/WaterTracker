@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, SafeAreaView, Button, AsyncStorage, View } from 'react-native';
-import { store, addDailyWater, resetDailyWater } from './store';
+import { store, addDailyWater, resetDailyWater } from '../store';
 import { connect } from 'react-redux';
 
 class WaterTracker extends Component {
