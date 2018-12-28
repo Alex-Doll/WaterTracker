@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, SafeAreaView, Button, AsyncStorage, View } from 'react-native';
 import { addDailyWater, resetDailyWater } from '../actions';
 import { connect } from 'react-redux';
+import { dimensions, colors, fonts } from '../styles/base';
+import AnimatedWaterGlass from './AnimatedWaterGlass';
 
 class WaterTracker extends Component {
   renderTrackers = () => {
@@ -24,21 +26,23 @@ class WaterTracker extends Component {
 
     return (
       <SafeAreaView style={styles.waterTracker}>
-        <Text>{this.props.today}</Text>
-        <View style={styles.tracker}>
-          { this.renderTrackers() }
-        </View>
+        <Text style={styles.today}>{this.props.today}</Text>
+        <AnimatedWaterGlass />
         { isWaterGoalMet && <Text style={styles.goal}>Daily Water Goal Reached!</Text> }
-        <Button
-          style={styles.button}
-          onPress={this.props.addDailyWater.bind(this, 1)}
-          title='8oz.'
-        />
-        <Button
-          style={styles.button}
-          onPress={this.props.addDailyWater.bind(this, 2)}
-          title='16oz.'
-        />
+        <View style={styles.buttonContainer}>
+          <Button
+            style={styles.waterButton}
+            onPress={this.props.addDailyWater.bind(this, 1)}
+            color={colors.tertiary}
+            title='8oz.'
+          />
+          <Button
+            style={styles.waterButton}
+            onPress={this.props.addDailyWater.bind(this, 2)}
+            color={colors.tertiary}
+            title='16oz.'
+          />
+        </View>
       </SafeAreaView>
     );
   }
@@ -46,44 +50,51 @@ class WaterTracker extends Component {
 
 const styles = StyleSheet.create({
   waterTracker: {
-    flex: 1,
-    backgroundColor: '#a8c9ff',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center'
+    height: dimensions.fullHeight,
+    width: dimensions.fullWidth,
+    backgroundColor: colors.primary,
+  },
+  today: {
+    color: colors.tertiary,
+    fontFamily: fonts.primary,
+    fontSize: fonts.lg,
   },
   goal: {
-    color: 'red',
+    fontFamily: fonts.primary,
   },
   tracker: {
-    padding: 20,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   complete: {
-    margin: 5,
-    height: 10,
-    width: 10,
-    backgroundColor: 'blue',
-    borderColor: 'blue',
-    borderStyle: 'solid',
+    height: fonts.lg,
+    width: fonts.lg,
     borderWidth: 1,
+    borderRadius: fonts.lg/2,
+    borderColor: colors.tertiary,
+    backgroundColor: colors.secondary,
+    margin: fonts.sm * 0.5,
   },
   incomplete: {
-    margin: 5,
-    height: 10,
-    width: 10,
-    backgroundColor: 'transparent',
-    borderColor: 'black',
-    borderStyle: 'solid',
+    height: fonts.lg,
+    width: fonts.lg,
     borderWidth: 1,
+    borderRadius: fonts.lg/2,
+    borderColor: colors.tertiary,
+    backgroundColor: colors.tertiary,
+    margin: fonts.sm * 0.5,
   },
-  button: {
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: 'black',
-  }
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  waterButton: {
+    fontFamily: fonts.primary,
+  },
 });
+
 
 const mapStateToProps = (state) => ({
   cupsDrank: state.dailyWater.current,
