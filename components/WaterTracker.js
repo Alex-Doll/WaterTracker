@@ -6,21 +6,6 @@ import { dimensions, colors, fonts } from '../styles/base';
 import AnimatedWaterGlass from './AnimatedWaterGlass';
 
 class WaterTracker extends Component {
-  renderTrackers = () => {
-    let trackers = [];
-
-    for (let i = 0; i < this.props.cupsGoal; i++) {
-      trackers.push(
-        <View
-          key={i}
-          style={(i < this.props.cupsDrank) ? styles.complete : styles.incomplete}
-        ></View>
-      );
-    }
-
-    return trackers;
-  }
-
   render() {
     const isWaterGoalMet = this.props.cupsDrank >= this.props.cupsGoal;
 
@@ -63,28 +48,6 @@ const styles = StyleSheet.create({
   },
   goal: {
     fontFamily: fonts.primary,
-  },
-  tracker: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  complete: {
-    height: fonts.lg,
-    width: fonts.lg,
-    borderWidth: 1,
-    borderRadius: fonts.lg/2,
-    borderColor: colors.tertiary,
-    backgroundColor: colors.secondary,
-    margin: fonts.sm * 0.5,
-  },
-  incomplete: {
-    height: fonts.lg,
-    width: fonts.lg,
-    borderWidth: 1,
-    borderRadius: fonts.lg/2,
-    borderColor: colors.tertiary,
-    backgroundColor: colors.tertiary,
-    margin: fonts.sm * 0.5,
   },
   buttonContainer: {
     flexDirection: 'row',
